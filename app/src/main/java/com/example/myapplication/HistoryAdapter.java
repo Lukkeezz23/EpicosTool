@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
-    private List<List<Object>> data;
+    private final List<List<Object>> data;
 
     public HistoryAdapter(List<List<Object>> data) {
         this.data = data;
@@ -21,15 +21,25 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     @Override
     public HistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(android.R.layout.simple_list_item_2, parent, false);
+                .inflate(R.layout.item_history, parent, false);
         return new HistoryViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
+        // Každý řádek z tabulky Google Sheets
         List<Object> row = data.get(position);
-        holder.text1.setText(row.size() > 0 ? row.get(0).toString() : "");
-        holder.text2.setText(row.size() > 1 ? row.get(1).toString() : "");
+
+        // První řádek: Datum / Směna / Seřizovač
+        String date = row.size() > 0 ? row.get(0).toString() : "N/A";
+        String shift = row.size() > 0 ? row.get(1).toString() : "N/A";
+        String operator = row.size() > 0 ? row.get(3).toString() : "N/A";
+        holder.textDateShiftOperator.setText(String.format("%s / %s / %s", date, shift, operator));
+
+        // Druhý řádek: Palet: x / NOK: x
+        String palet = row.size() > 3 ? row.get(3).toString() : "0";
+        String nok = row.size() > 4 ? row.get(4).toString() : "0";
+        holder.textPaletNok.setText(String.format("Palet: %s / NOK: %s", palet, nok));
     }
 
     @Override
@@ -38,18 +48,19 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     }
 
     public void updateData(List<List<Object>> newData) {
-        data = newData;
+        data.clear();
+        data.addAll(newData);
         notifyDataSetChanged();
     }
 
     static class HistoryViewHolder extends RecyclerView.ViewHolder {
-        TextView text1;
-        TextView text2;
+        TextView textDateShiftOperator;
+        TextView textPaletNok;
 
         public HistoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            text1 = itemView.findViewById(android.R.id.text1);
-            text2 = itemView.findViewById(android.R.id.text2);
+            textDateShiftOperator = itemView.findViewById(R.id.textDateShiftOperator);
+            textPaletNok = itemView.findViewById(R.id.textPaletNok);
         }
     }
 }
