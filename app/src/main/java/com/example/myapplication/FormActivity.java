@@ -47,7 +47,7 @@ public class FormActivity extends AppCompatActivity {
     private String currentPhotoPath;
     private static final String TAG = "Zapis";
     private static final String SPREADSHEET_ID = "1B2XoPtQpPKJqrn56u-6IrUFtm1y--0fmLpDgUyTj7Jo"; // ID Google Sheets dokumentu
-    private static final String RANGE = "List1!A1:G10"; // Rozsah pro zapisování dat
+    private static final String RANGE = "List1"; // Rozsah pro zapisování dat
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,9 +108,8 @@ public class FormActivity extends AppCompatActivity {
                     "Počet NOK ks: " + numNOK + "\n" +
                     "Seřizovač: " + serizovac;
 
-            // Data pro uložení do Google Sheets
-            List<List<Object>> data = List.of (
-                    Arrays.asList ( date, shift, type, weight, numPalets, numNOK, serizovac )
+            List<List<Object>> data = Arrays.asList(
+                    Arrays.asList(date, shift, type, weight, numPalets, numNOK, serizovac)
             );
             new SaveToGoogleSheetTask().execute(data);
 
@@ -222,7 +221,7 @@ public class FormActivity extends AppCompatActivity {
                         new NetHttpTransport(),
                         GsonFactory.getDefaultInstance(),
                         credential
-                ).setApplicationName("My Application")
+                ).setApplicationName("Zapis")
                         .build();
 
                 ValueRange body = new ValueRange().setValues(params[0]);
