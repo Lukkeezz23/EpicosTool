@@ -5,6 +5,12 @@ plugins {
 android {
     namespace = "com.example.myapplication"
     compileSdk = 35
+    packaging {
+        resources {
+            excludes += "META-INF/INDEX.LIST"
+            excludes += "META-INF/DEPENDENCIES"
+        }
+    }
 
     defaultConfig {
         applicationId = "com.example.myapplication"
@@ -38,7 +44,13 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.firebase.inappmessaging)
+    implementation(libs.core.ktx)
+    implementation(libs.extension.okhttp)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+        implementation(libs.google.api.client)
+        implementation(libs.google.api.client.android)
+        implementation(libs.google.http.client.gson)
+        implementation(libs.google.api.services.sheets)
 }

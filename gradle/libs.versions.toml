@@ -1,15 +1,27 @@
 [versions]
 agp = "8.8.0"
+googleApiClient = "2.7.2"
+googleApiClientAndroid = "2.7.2"
+googleApiServicesSheets = "v4-rev20230112-2.0.0"
+googleApiServicesSheetsVersion = "v4-rev20230112-2.0.0"
+googleHttpClientGson = "1.45.3"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-appcompat = "1.6.1"
-material = "1.10.0"
-activity = "1.8.0"
-constraintlayout = "2.1.4"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+activity = "1.10.0"
+constraintlayout = "2.2.0"
 firebaseInappmessaging = "21.0.1"
+coreKtx = "1.15.0"
+extensionOkhttp = "2.19.1"
 
 [libraries]
+google-api-client-android = { module = "com.google.api-client:google-api-client-android", version.ref = "googleApiClient" }
+google-api-client = { module = "com.google.api-client:google-api-client", version = "2.7.2" }
+google-api-services-sheets = { module = "com.google.apis:google-api-services-sheets", version = "v4-rev20250106-2.0.0" }
+google-api-services-sheets-vv4rev20230112200 = { module = "com.google.apis:google-api-services-sheets", version.ref = "googleApiServicesSheetsVersion" }
+google-http-client-gson = { module = "com.google.http-client:google-http-client-gson", version = "1.45.3" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -18,6 +30,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 firebase-inappmessaging = { group = "com.google.firebase", name = "firebase-inappmessaging", version.ref = "firebaseInappmessaging" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+extension-okhttp = { group = "com.google.android.exoplayer", name = "extension-okhttp", version.ref = "extensionOkhttp" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
