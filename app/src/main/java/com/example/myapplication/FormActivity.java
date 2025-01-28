@@ -108,8 +108,8 @@ public class FormActivity extends AppCompatActivity {
                     "Počet NOK ks: " + numNOK + "\n" +
                     "Seřizovač: " + serizovac;
 
-            List<List<Object>> data = Arrays.asList(
-                    Arrays.asList(date, shift, type, weight, numPalets, numNOK, serizovac)
+            List<List<Object>> data = List.of (
+                    Arrays.asList ( date, shift, type, weight, numPalets, numNOK, serizovac )
             );
             new SaveToGoogleSheetTask().execute(data);
 

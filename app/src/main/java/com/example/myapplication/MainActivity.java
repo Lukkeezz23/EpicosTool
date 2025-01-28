@@ -9,13 +9,13 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-public class MainActivity extends AppCompatActivity {
 
+public class MainActivity extends AppCompatActivity {
     Button btnCreate;
     Button btnHistorie;
     Button btnExit;
-
     Button btnPorucha;
+    Button btnToggleTheme;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -72,5 +72,27 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent (MainActivity.this, FailuresActivity.class);
             startActivity ( intent );
         } );
-        }
+
+        btnCreate = findViewById(R.id.btn_create);
+        btnExit = findViewById(R.id.btn_exit);
+        btnHistorie = findViewById(R.id.btn_history);
+        btnPorucha = findViewById(R.id.btn_create_porucha);
+
+        btnCreate.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, FormActivity.class);
+            startActivity(intent);
+        });
+
+        btnExit.setOnClickListener(v -> finish());
+
+        btnHistorie.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+            startActivity(intent);
+        });
+
+        btnPorucha.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, FilesActivity.class);
+            startActivity(intent);
+        });
     }
+}
