@@ -1,98 +1,79 @@
 package com.example.myapplication;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-
+import androidx.viewpager2.widget.ViewPager2;
 
 public class MainActivity extends AppCompatActivity {
-    Button btnCreate;
-    Button btnHistorie;
-    Button btnExit;
-    Button btnPorucha;
-    Button btnToggleTheme;
+
+    private ViewPager2 viewPager;
+    private TextView tvPageCounter;
     private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate ( savedInstanceState );
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        EdgeToEdge.enable(this);
 
-        sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE);
-        boolean isDarkTheme = sharedPreferences.getBoolean("dark_theme", false);
-        if (isDarkTheme) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-
-        EdgeToEdge.enable ( this );
-        setContentView ( R.layout.activity_main );
+        viewPager = findViewById(R.id.viewPager);
+        tvPageCounter = findViewById(R.id.tvPageCounter);
         Button btnToggleTheme = findViewById(R.id.btn_toggle_theme);
-        btnToggleTheme.setOnClickListener(v -> {
-            boolean currentTheme = sharedPreferences.getBoolean("dark_theme", false);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+        ImageView arrowLeft = findViewById(R.id.arrowLeft);
+        ImageView arrowRight = findViewById(R.id.arrowRight);
 
-            if (currentTheme) {
+        // Nastavení adapteru s fragmenty
+        MenuPagerAdapter adapter = new MenuPagerAdapter(this);
+        viewPager.setAdapter(adapter);
+
+        // Nastavení celkového počtu fragmentů
+        int totalFragments = adapter.getItemCount();
+        tvPageCounter.setText("1 / " + totalFragments);
+
+        // Posluchač změn stránky pro aktualizaci čítače
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                tvPageCounter.setText((position + 1) + " / " + totalFragments);
+            }
+        });
+
+        // Ovládání šipek
+        arrowLeft.setOnClickListener(v -> viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true));
+        arrowRight.setOnClickListener(v -> viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true));
+
+        // Přepínání světlého a tmavého režimu
+        btnToggleTheme.setOnClickListener(v -> {
+            boolean isDarkMode = sharedPreferences.getBoolean("dark_theme", false);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            if (isDarkMode) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 editor.putBoolean("dark_theme", false);
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 editor.putBoolean("dark_theme", true);
             }
-
             editor.apply();
         });
 
-        btnCreate = findViewById ( R.id.btn_create );
-        btnExit = findViewById ( R.id.btn_exit );
-        btnHistorie = findViewById ( R.id.btn_history );
-        btnPorucha = findViewById ( R.id.btn_create_porucha );
-        btnCreate.setOnClickListener ( v -> {
-            Intent intent = new Intent ( MainActivity.this, FormActivity.class );
-            startActivity ( intent );
-        } );
+        // Nastavení profesionálního gradientového pozadí
+        setProfessionalBackground();
+    }
 
-        // Nastavení posluchače pro tlačítko "Ukončit"
-        btnExit.setOnClickListener ( v -> {
-            // Ukončení aplikace
-            finish ();
-        } );
-
-        btnHistorie.setOnClickListener ( v -> {
-            Intent intent = new Intent (MainActivity.this, HistoryActivity.class);
-            startActivity ( intent );
-        } );
-
-        btnPorucha.setOnClickListener ( v -> {
-            Intent intent = new Intent (MainActivity.this, FailuresActivity.class);
-            startActivity ( intent );
-        } );
-
-        btnCreate = findViewById(R.id.btn_create);
-        btnExit = findViewById(R.id.btn_exit);
-        btnHistorie = findViewById(R.id.btn_history);
-        btnPorucha = findViewById(R.id.btn_create_porucha);
-
-        btnCreate.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, FormActivity.class);
-            startActivity(intent);
-        });
-
-        btnExit.setOnClickListener(v -> finish());
-
-        btnHistorie.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
-            startActivity(intent);
-        });
-
-        btnPorucha.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, FilesActivity.class);
-            startActivity(intent);
-        });
+    // Profesionální gradientové pozadí
+    private void setProfessionalBackground() {
+        GradientDrawable gradient = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{0xFF1E1E1E, 0xFF3D3D3D} // Gradient barvy
+        );
+        //findViewById(R.id.mainLayout).setBackground(gradient);
     }
 }
