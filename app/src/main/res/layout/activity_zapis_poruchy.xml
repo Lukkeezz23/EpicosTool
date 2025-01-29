@@ -14,72 +14,168 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
             android:text="Nový zápis poruchy"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvUnikatniID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/green"
             android:text="ID: "
-            android:textSize="16sp"
-            android:textColor="#888888" />
+            android:textColor="#FDFEFF"
+            android:textSize="20sp"
+            tools:ignore="TextContrastCheck" />
 
         <EditText
             android:id="@+id/etDatumVzniku"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Datum vzniku"
-            android:focusable="false" />
+            style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:drawableEnd="@drawable/calendar"
+            android:focusable="false"
+            android:hint="Datum"
+            android:minHeight="48dp" />
 
-        <Spinner
-            android:id="@+id/spinnerStroj"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tvVyberStroje"
+                    android:layout_width="160dp"
+                    android:layout_height="44dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="0dp"
+                    android:gravity="center_vertical"
+                    android:text="Stroj:"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    tools:ignore="RtlCompat" />
+
+                <Spinner
+                    android:id="@+id/spinnerStroj"
+                    android:layout_width="182dp"
+                    android:layout_height="44dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="0dp"
+                    android:scrollIndicators="none"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Spinner
+                    android:id="@+id/spinnerReseni"
+                    android:layout_width="182dp"
+                    android:layout_height="44dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+                <TextView
+                    android:id="@+id/tvVyberReseni"
+                    android:layout_width="160dp"
+                    android:layout_height="44dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:gravity="center_vertical"
+                    android:text="Řešení:"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    tools:ignore="RtlCompat" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
         <EditText
             android:id="@+id/etKomponent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Porucha na komponentu"/>
-
-        <Spinner
-            android:id="@+id/spinnerReseni"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            android:hint="Je poškozený komponent?"
+            android:minHeight="48dp"
+            android:textColorHint="@color/black" />
 
         <EditText
             android:id="@+id/etPopis"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="160dp"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
             android:hint="Popis poruchy"
             android:inputType="textMultiLine"
-            android:minLines="3" />
+            android:minLines="3"
+            android:textColorHint="@color/black" />
 
         <EditText
             android:id="@+id/etZapisovatel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Zapisovatel" />
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            android:hint="Zapsal"
+            android:minHeight="48dp"
+            android:textColorHint="@color/black" />
 
         <Button
             android:id="@+id/btnPridatFoto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="📷 Přidat foto" />
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:backgroundTint="@color/green"
+            android:text="📷 Přidat foto"
+            android:textSize="18sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewFotos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btnOdeslat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="📤 Odeslat" />
+            android:layout_width="140dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:backgroundTint="@color/green"
+            android:text="📤 Odeslat"
+            android:textSize="18sp" />
+
     </LinearLayout>
 </ScrollView>

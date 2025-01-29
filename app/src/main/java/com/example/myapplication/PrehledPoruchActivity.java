@@ -31,7 +31,7 @@ public class PrehledPoruchActivity extends AppCompatActivity {
 
     private static final String TAG = "PrehledPoruchActivity";
     private static final String SPREADSHEET_ID = "13Z_yNW4uDPHoaWuPimqWS-DeXRn_GCJ27j14_P4C7ms";  // 🔹 Nahraď ID tabulky
-    private static final String RANGE = "Data!A2:H"; // 🔹 Název listu + rozsah
+    private static final String RANGE = "List1!A2:H"; // 🔹 Název listu + rozsah
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private Sheets sheetsService;
 

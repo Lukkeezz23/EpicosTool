@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -68,18 +69,30 @@ public class ZapisPoruchyActivity extends AppCompatActivity {
                     etDatumVzniku.setText(year + "-" + (month + 1) + "-" + dayOfMonth),
                     calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
         });
-
+        btnPridatFoto.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, REQUEST_PICK_IMAGE);
+        });
 
         new LoadGoogleSheetData(spinnerStroj, RANGE_STROJE).execute();
         new LoadGoogleSheetData(spinnerReseni, RANGE_RESENI).execute();
 
         btnOdeslat.setOnClickListener(v -> new SaveToGoogleSheetTask().execute());
     }
-
+@Override
+protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_PICK_IMAGE && data != null) {
+            Uri selectedImage = data.getData();
+            seznamFotek.add(selectedImage);
+            fotoAdapter.notifyDataSetChanged();
+        }
+    }
+}
     private class LoadGoogleSheetData extends AsyncTask<Void, Void, List<String>> {
         private Spinner spinner;
         private String range;
-
         public LoadGoogleSheetData(Spinner spinner, String range) {
             this.spinner = spinner;
             this.range = range;
@@ -87,13 +100,14 @@ public class ZapisPoruchyActivity extends AppCompatActivity {
 
         @Override
         protected List<String> doInBackground(Void... voids) {
+            List<String> data = new ArrayList<>();
             try {
                 InputStream jsonStream = getResources().openRawResource(R.raw.service_account_key);
                 GoogleCredential credential = GoogleCredential.fromStream(jsonStream)
                         .createScoped(Collections.singletonList("https://www.googleapis.com/auth/spreadsheets"));
 
                 Sheets sheetsService = new Sheets.Builder(new NetHttpTransport(), GsonFactory.getDefaultInstance(), credential)
-                        .setApplicationName("Zapis")
+                        .setApplicationName("MyApplication")
                         .build();
 
                 ValueRange response = sheetsService.spreadsheets().values()
@@ -101,60 +115,90 @@ public class ZapisPoruchyActivity extends AppCompatActivity {
                         .execute();
 
                 List<List<Object>> values = response.getValues();
-                List<String> items = new ArrayList<>();
                 if (values != null) {
                     for (List<Object> row : values) {
-                        items.add(row.get(0).toString());
+                        if (!row.isEmpty()) {
+                            data.add(row.get(0).toString());
+                        }
                     }
                 }
-                return items;
             } catch (Exception e) {
                 Log.e(TAG, "Chyba při načítání Google Sheets", e);
-                return Collections.emptyList();
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> data) {
+            if (!data.isEmpty()) {
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(ZapisPoruchyActivity.this, android.R.layout.simple_spinner_item, data);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(adapter);
+            }
+        }
+    }
+    private class SaveToGoogleSheetTask extends AsyncTask<Void, Void, Boolean> {
+        private String zprava;
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                InputStream jsonStream = getResources ().openRawResource ( R.raw.service_account_key );
+                GoogleCredential credential = GoogleCredential.fromStream ( jsonStream )
+                        .createScoped ( Collections.singletonList ( "https://www.googleapis.com/auth/spreadsheets" ) );
+
+                Sheets sheetsService = new Sheets.Builder ( new NetHttpTransport (), GsonFactory.getDefaultInstance (), credential )
+                        .setApplicationName ( "MyApplication" )
+                        .build ();
+
+                String stroj = (spinnerStroj.getSelectedItem () != null) ? spinnerStroj.getSelectedItem ().toString () : "NEVYBRÁNO";
+                String reseni = (spinnerReseni.getSelectedItem () != null) ? spinnerReseni.getSelectedItem ().toString () : "NEVYBRÁNO";
+
+                List<Object> values = Arrays.asList (
+                        tvUnikatniID.getText ().toString (),
+                        etDatumVzniku.getText ().toString (),
+                        stroj,
+                        etKomponent.getText ().toString (),
+                        reseni,
+                        etPopis.getText ().toString (),
+                        etZapisovatel.getText ().toString ()
+                );
+
+                sheetsService.spreadsheets ().values ()
+                        .append ( SPREADSHEET_ID_DATA, RANGE_DATA, new ValueRange ().setValues ( Collections.singletonList ( values ) ) )
+                        .setValueInputOption ( "RAW" )
+                        .execute ();
+
+                zprava = "Porucha zaznamenána!\n\n" +
+                        "ID: " + tvUnikatniID.getText ().toString () + "\n" +
+                        "Datum: " + etDatumVzniku.getText ().toString () + "\n" +
+                        "Stroj: " + stroj + "\n" +
+                        "Komponent: " + etKomponent.getText ().toString () + "\n" +
+                        "Řešení: " + reseni + "\n" +
+                        "Popis: " + etPopis.getText ().toString () + "\n" +
+                        "Zapsal: " + etZapisovatel.getText ().toString ();
+                return true;
+            } catch (Exception e) {
+                Log.e ( TAG, "Chyba při zápisu do Google Sheets", e );
+                return false;
             }
         }
 
         @Override
-        protected void onPostExecute(List<String> result) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(ZapisPoruchyActivity.this, android.R.layout.simple_spinner_item, result);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
-        }
-    }
-
-    private class SaveToGoogleSheetTask extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            try {
-                InputStream jsonStream = getResources().openRawResource(R.raw.service_account_key);
-                GoogleCredential credential = GoogleCredential.fromStream(jsonStream)
-                        .createScoped(Collections.singletonList("https://www.googleapis.com/auth/spreadsheets"));
-
-                Sheets sheetsService = new Sheets.Builder(new NetHttpTransport(), GsonFactory.getDefaultInstance(), credential)
-                        .setApplicationName("Zapis")
-                        .build();
-
-                String stroj = (spinnerStroj.getSelectedItem() != null) ? spinnerStroj.getSelectedItem().toString() : "NEVYBRÁNO";
-                String reseni = (spinnerReseni.getSelectedItem() != null) ? spinnerReseni.getSelectedItem().toString() : "NEVYBRÁNO";
-
-                List<Object> values = Arrays.asList(
-                        tvUnikatniID.getText().toString(),
-                        etDatumVzniku.getText().toString(),
-                        stroj,
-                        etKomponent.getText().toString(),
-                        reseni,
-                        etPopis.getText().toString(),
-                        etZapisovatel.getText().toString()
-                );
-
-                sheetsService.spreadsheets().values()
-                        .append(SPREADSHEET_ID_DATA, RANGE_DATA, new ValueRange().setValues(Collections.singletonList(values)))
-                        .setValueInputOption("RAW")
-                        .execute();
-                return true;
-            } catch (Exception e) {
-                Log.e(TAG, "Chyba při zápisu do Google Sheets", e);
-                return false;
+        protected void onPostExecute(Boolean success) {
+            if (success) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, zprava);
+                intent.setPackage("com.whatsapp");
+                if (!seznamFotek.isEmpty()) {
+                    ArrayList<Uri> uris = new ArrayList<>(seznamFotek);
+                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+                    intent.setType("image/*");
+                }
+                startActivity(intent);
+            } else {
+                Toast.makeText(ZapisPoruchyActivity.this, "Chyba při zápisu", Toast.LENGTH_SHORT).show();
             }
         }
     }
