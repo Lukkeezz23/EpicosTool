@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +23,17 @@ public class VyrobaFragment extends Fragment {
         Button btnCreate = view.findViewById(R.id.btnCreate);
         Button btnHistory = view.findViewById(R.id.btnHistory);
 
-        // Přidání klikací funkce
-        btnCreate.setOnClickListener(v -> Toast.makeText(getActivity(), "Vytvořit kliknuto", Toast.LENGTH_SHORT).show());
-        btnHistory.setOnClickListener(v -> Toast.makeText(getActivity(), "Záznamy kliknuto", Toast.LENGTH_SHORT).show());
+        btnCreate.setOnClickListener ( v -> {
+            Toast.makeText(getActivity(), "Vytvořit kliknuto", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), FormActivity.class);
+            startActivity(intent);
+        } );
 
+        btnHistory.setOnClickListener ( v -> {
+            Toast.makeText(getActivity(), "Vytvořit kliknuto", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), HistoryActivity.class);
+            startActivity(intent);
+        } );
         return view;
     }
 }

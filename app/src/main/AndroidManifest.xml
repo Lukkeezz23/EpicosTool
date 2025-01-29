@@ -30,6 +30,10 @@
         <activity
             android:name=".FilesActivity"/>
         <activity
+            android:name=".ZapisPoruchyActivity"/>
+        <activity
+            android:name=".PrehledPoruchActivity"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

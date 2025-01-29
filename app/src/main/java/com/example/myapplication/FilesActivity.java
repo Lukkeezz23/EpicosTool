@@ -1,83 +1,85 @@
 package com.example.myapplication;
 
-import android.os.AsyncTask;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class FilesActivity extends AppCompatActivity {
 
-    private static final String API_KEY = "AIzaSyBkuIQPRT1Hd2_8AVgnO6lCANbPpvBRXQM"; // Vložte svůj API klíč
-    private static final String FOLDER_ID = "1ReqSiZuplnAz7I8Lbh9kvx65DDlq7Txz"; // Vložte ID veřejné složky (nebo nechte prázdné pro všechny veřejné soubory)
+    private static final String TAG = "FilesActivity";
+    private static final String API_KEY = "AIzaSyBkuIQPRT1Hd2_8AVgnO6lCANbPpvBRXQM";
+    private static final String FOLDER_ID = "1guPJGpwECaJ_oPwX3FHWKbxPwhuTA-Pb";
 
     private Drive driveService;
-    private TextView textViewFiles;
+    private RecyclerView recyclerView;
+    private FileAdapter fileAdapter;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_files);
 
-        textViewFiles = findViewById(R.id.textViewFiles);
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Inicializace Google Drive API klienta
+        fileAdapter = new FileAdapter(new ArrayList<>(), this::openFile);
+        recyclerView.setAdapter(fileAdapter);
+
+        // Inicializace Google Drive API
         driveService = new Drive.Builder(
                 new NetHttpTransport(),
-                new JacksonFactory(),
-                (HttpRequestInitializer) request -> request.setInterceptor(intercepted -> {
-                    intercepted.getUrl().put("key", API_KEY);
-                })
-        ).setApplicationName("MyApplication")
-                .build();
+                new GsonFactory(),
+                null
+        ).setApplicationName("MyApplication").build();
 
-        // Spuštění načítání souborů
-        new LoadPublicFilesTask().execute();
+        // Načtení souborů
+        loadPublicFiles();
     }
 
-    private class LoadPublicFilesTask extends AsyncTask<Void, Void, List<File>> {
-
-        @Override
-        protected List<File> doInBackground(Void... voids) {
+    private void loadPublicFiles() {
+        executorService.execute(() -> {
             try {
-                String query = "visibility = 'anyoneCanFind' or visibility = 'anyoneWithLink'";
-                if (!FOLDER_ID.isEmpty()) {
-                    query += " and '" + FOLDER_ID + "' in parents";
-                }
+                String query = "'%s' in parents and trashed = false";
+                query = String.format(query, FOLDER_ID);
 
                 FileList result = driveService.files().list()
                         .setQ(query)
-                        .setFields("files(id, name, webViewLink)")
+                        .setFields("files(id, name, thumbnailLink, webViewLink)")
+                        .setKey(API_KEY)
                         .execute();
 
-                return result.getFiles();
+                List<File> files = result.getFiles();
+                runOnUiThread(() -> {
+                    if (files != null && !files.isEmpty()) {
+                        fileAdapter.updateFiles(files);
+                    }
+                });
             } catch (IOException e) {
-                e.printStackTrace();
-                return null;
+                Log.e(TAG, "❌ Chyba při načítání souborů", e);
             }
-        }
+        });
+    }
 
-        @Override
-        protected void onPostExecute(List<File> files) {
-            if (files != null && !files.isEmpty()) {
-                StringBuilder fileNames = new StringBuilder("Veřejné soubory:\n");
-                for (File file : files) {
-                    fileNames.append("📄 ").append(file.getName()).append("\n🔗 ").append(file.getWebViewLink()).append("\n\n");
-                }
-                textViewFiles.setText(fileNames.toString());
-            } else {
-                textViewFiles.setText("❌ Žádné veřejné soubory nebyly nalezeny.");
-            }
-        }
+    private void openFile(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
     }
 }

@@ -1,11 +1,11 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,10 +22,13 @@ public class DokumentyFragment extends Fragment {
         Button btnShowDocuments = view.findViewById(R.id.btnShowDocuments);
 
         // Klikací akce
-        btnShowDocuments.setOnClickListener(v ->
-                Toast.makeText(getActivity(), "Zobrazit dokumenty", Toast.LENGTH_SHORT).show()
-        );
+        btnShowDocuments.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), FilesActivity.class);
+            intent.putExtra("AUTO_LOAD", true); // 🔹 Přidání informace o stisku tlačítka
+            startActivity(intent);
+        });
 
         return view;
     }
 }
+

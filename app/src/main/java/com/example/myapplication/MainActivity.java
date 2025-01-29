@@ -30,15 +30,18 @@ public class MainActivity extends AppCompatActivity {
         ImageView arrowLeft = findViewById(R.id.arrowLeft);
         ImageView arrowRight = findViewById(R.id.arrowRight);
 
-        // Nastavení adapteru s fragmenty
+        // ✅ Opravená inicializace SharedPreferences
+        sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+
+        // ✅ Opravené nastavení adapteru s fragmenty
         MenuPagerAdapter adapter = new MenuPagerAdapter(this);
         viewPager.setAdapter(adapter);
 
-        // Nastavení celkového počtu fragmentů
+        // ✅ Nastavení celkového počtu fragmentů
         int totalFragments = adapter.getItemCount();
         tvPageCounter.setText("1 / " + totalFragments);
 
-        // Posluchač změn stránky pro aktualizaci čítače
+        // ✅ Posluchač změn stránky pro aktualizaci čítače
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -46,11 +49,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Ovládání šipek
-        arrowLeft.setOnClickListener(v -> viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true));
-        arrowRight.setOnClickListener(v -> viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true));
+        // ✅ Ovládání šipek (zabránění přetečení)
+        arrowLeft.setOnClickListener(v -> {
+            int currentItem = viewPager.getCurrentItem();
+            if (currentItem > 0) {
+                viewPager.setCurrentItem(currentItem - 1, true);
+            }
+        });
 
-        // Přepínání světlého a tmavého režimu
+        arrowRight.setOnClickListener(v -> {
+            int currentItem = viewPager.getCurrentItem();
+            if (currentItem < totalFragments - 1) {
+                viewPager.setCurrentItem(currentItem + 1, true);
+            }
+        });
+
+        // ✅ Opravené přepínání světlého a tmavého režimu
         btnToggleTheme.setOnClickListener(v -> {
             boolean isDarkMode = sharedPreferences.getBoolean("dark_theme", false);
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -64,16 +78,16 @@ public class MainActivity extends AppCompatActivity {
             editor.apply();
         });
 
-        // Nastavení profesionálního gradientového pozadí
+        // ✅ Profesionální gradientové pozadí
         setProfessionalBackground();
     }
 
-    // Profesionální gradientové pozadí
+    // ✅ Profesionální gradientové pozadí
     private void setProfessionalBackground() {
         GradientDrawable gradient = new GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[]{0xFF1E1E1E, 0xFF3D3D3D} // Gradient barvy
+                new int[]{0xFFB0B0B0, 0xFFE0E0E0} // Gradient barvy
         );
-        //findViewById(R.id.mainLayout).setBackground(gradient);
+        findViewById(R.id.mainLayout).setBackground(gradient);
     }
 }
