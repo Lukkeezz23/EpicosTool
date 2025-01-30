@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="Nový zápis poruchy"
+            android:text="🖋 Nový zápis poruchy 🔧"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -60,7 +60,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="0dp"
                     android:gravity="center_vertical"
-                    android:text="Stroj:"
+                    android:text="⚙️ Stroj:"
                     android:textAlignment="center"
                     android:textSize="16sp"
                     tools:ignore="RtlCompat" />
@@ -111,7 +111,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="0dp"
                     android:gravity="center_vertical"
-                    android:text="Řešení:"
+                    android:text="🩹 Řešení:"
                     android:textAlignment="center"
                     android:textSize="16sp"
                     tools:ignore="RtlCompat" />
@@ -160,7 +160,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal|center_vertical"
             android:backgroundTint="@color/green"
-            android:text="📷 Přidat foto"
+            android:text="➕ Fotky "
             android:textSize="18sp" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -2,16 +2,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
-
-    <TextView
+    android:layout_marginTop="00dp"
+    android:gravity="center|top">
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:textAlignment="center"
-        android:text="Poruchy"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/nadpis_pozadi">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="⚙️ Poruchy 🛠"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/btn1"
@@ -19,7 +26,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#4CAF50"
         android:textColor="@android:color/white"
-        android:text="Zapsat"
+        android:text="📝 Zapsat"
         android:textSize="18sp"/>
 
     <Button
@@ -28,7 +35,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#4CAF50"
         android:textColor="@android:color/white"
-        android:text="Přehled"
+        android:text="📑 Přehled"
         android:textSize="18sp"/>
 
     <Button
@@ -43,6 +50,6 @@
         android:id="@+id/swipeHint"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_qu_swap_horizontal"
+        android:src="@drawable/swipe"
         android:layout_marginTop="30dp"/>
 </LinearLayout>

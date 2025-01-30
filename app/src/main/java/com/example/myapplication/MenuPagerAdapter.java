@@ -18,12 +18,13 @@ public class MenuPagerAdapter extends FragmentStateAdapter {
             case 1: return new PoruchyFragment();
             case 2: return new StatistikyFragment();
             case 3: return new DokumentyFragment ();
+            case 4: return new NastaveniFragment ();
             default: return new VyrobaFragment();
         }
     }
 
     @Override
     public int getItemCount() {
-        return 4; // Počet fragmentů
+        return 5; // Počet fragmentů
     }
 }

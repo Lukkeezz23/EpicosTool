@@ -1,20 +1,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:outlineProvider="paddedBounds"
+    android:pointerIcon="arrow"
+    android:showDividers="beginning|end"
+    tools:ignore="VisualLintBounds">
 
-    <Spinner
-        android:id="@+id/spinnerFiltr"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/green"
+        android:letterSpacing="0.5"
+        android:text="Filtry"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:ignore="TextContrastCheck" />
 
-    <Spinner
-        android:id="@+id/spinnerMesic"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <Spinner
+            android:id="@+id/spinnerFiltr"
+            android:layout_width="160dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/spinnerMesic"
+            android:backgroundTint="@color/black"
+            android:foregroundTint="@color/white"/>
+
+
+        <Spinner
+            android:id="@+id/spinnerMesic"
+            style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"
+            android:layout_width="160dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp" />
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:outlineProvider="paddedBounds"
+        android:pointerIcon="arrow"
+        android:textAlignment="center" />
 </LinearLayout>

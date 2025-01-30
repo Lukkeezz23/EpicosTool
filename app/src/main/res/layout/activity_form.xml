@@ -1,122 +1,170 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".FormActivity">
 
     <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingTop="00dp"
+        android:gravity="center"
+        android:text="🏭 Nový zápis výroby 👨‍🔧"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal|center_vertical"/>
+</androidx.cardview.widget.CardView>
 
         <EditText
             android:id="@+id/editTextDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
             android:hint="Vyberte datum"
-            android:inputType="none"
-            android:minHeight="48dp"
-            android:textIsSelectable="false" />
+            android:focusable="false"
+            android:textColorHint="@color/white"
+            android:drawableEnd="@drawable/calendar" />
 
-        <EditText
-            android:id="@+id/editTextSerizovac"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Seřizovač"
-            android:minHeight="48dp"
-            android:textColor="@color/text_color"/>
+            android:layout_marginBottom="16dp">
+            <EditText
+                android:id="@+id/editTextSerizovac"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical|right"
+                android:hint="👷🏻‍♂️Seřizovač"
+                android:layout_marginRight="10dp"
+                android:textColorHint="@color/white"/>
+            <Spinner
+                android:id="@+id/spinnerShift"
+                android:layout_width="140dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical|left"
+                />
+        </androidx.cardview.widget.CardView>
 
-        <Spinner
-            android:id="@+id/spinnerShift"
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp">
+    <RadioGroup
+        android:id="@+id/radioGroupType"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioButtonKanystry"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="Kanystry"
+            android:textColor="@color/white"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonMagenta"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:text="Magenta"
+            android:textColor="@color/white"/>
+    </RadioGroup>
+
+    <Spinner
+        android:id="@+id/spinnerWeight"
+        android:layout_width="140dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginRight="10dp" />
+</androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:minHeight="48dp" />
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp">
+            <EditText
+                android:id="@+id/editTextNumPalets"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical|left"
+                android:hint="Počet palet"
+                android:layout_marginLeft="10dp"
+                android:inputType="number"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"/>
 
-        <RadioGroup
-            android:id="@+id/radioGroupType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/radioButtonKanystry"
+            <EditText
+                android:id="@+id/editTextNumNOK"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_color"
-                android:text="Kanystry" />
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginRight="10dp"
+                android:hint="Počet NOK ks"
+                android:inputType="number"
+                android:minHeight="48dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"/>
 
-            <RadioButton
-                android:id="@+id/radioButtonMagenta"
-                android:layout_width="wrap_content"
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:textColor="@color/text_color"
-                android:text="Magenta" />
-        </RadioGroup>
+                android:padding="16dp"
+                android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/spinnerWeight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/text_color"
-            android:minHeight="48dp" />
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:src="@drawable/images"/>
 
-        <EditText
-            android:id="@+id/editTextNumPalets"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Počet palet"
-            android:inputType="number"
-            android:textColor="@color/text_color"
-            android:minHeight="48dp" />
+                <Button
+                    android:id="@+id/buttonAddImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/green"
+                    android:text="➕ Fotky"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    tools:ignore="TextContrastCheck" />
 
-        <EditText
-            android:id="@+id/editTextNumNOK"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:height="50dp"
-            android:hint="Počet NOK ks"
-            android:inputType="number"
-            android:textColor="@color/text_color"
-            android:minHeight="48dp" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="40dp">
-
-            <Button
-                android:id="@+id/buttonAddImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center"
-                android:backgroundTint="#58AF40"
-                android:text="Přidat fotografii"
-                android:textColor="@color/text_color"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="50dp"
-                android:src="@android:drawable/ic_menu_camera" />
-        </FrameLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewFotos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/buttonSend"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="#58AF40"
-            android:text="Odeslat"
-            android:textSize="24sp"
-            android:textColor="@color/text_color"/>
-    </LinearLayout>
+            android:textColor="@color/white"
+            android:text="📤 Odeslat"
+            android:textSize="20sp"
+            tools:ignore="TextContrastCheck" />
 
+    </LinearLayout>
 </ScrollView>

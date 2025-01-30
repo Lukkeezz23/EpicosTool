@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.extension.okhttp)
     implementation(libs.transportation.driver)
     implementation(libs.cronet.embedded)
+    implementation(libs.preference)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

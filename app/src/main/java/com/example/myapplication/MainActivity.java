@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     // ✅ Profesionální gradientové pozadí
     private void setProfessionalBackground() {
         GradientDrawable gradient = new GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
+                GradientDrawable.Orientation.BL_TR,
                 new int[]{0xFFB0B0B0, 0xFFE0E0E0} // Gradient barvy
         );
         findViewById(R.id.mainLayout).setBackground(gradient);
